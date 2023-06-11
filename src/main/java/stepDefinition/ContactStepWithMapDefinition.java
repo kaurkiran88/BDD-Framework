@@ -1,8 +1,10 @@
-/*package stepDefinition;
+package stepDefinition;
 
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -12,8 +14,8 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class ContactStepDefinition {
-
+public class ContactStepWithMapDefinition {
+	
 	WebDriver driver;
 	
 	@Given("user is on Home Page and clicks on Login button")
@@ -34,10 +36,10 @@ public class ContactStepDefinition {
 	
 	@Then("user enters username and password")
 	public void user_enters_username_and_password(DataTable credentials) throws Throwable {	
-		List<List<String>> data = credentials.cells();
-		driver.findElement(By.id("loginusername")).sendKeys(data.get(0).get(0));
-		driver.findElement(By.id("loginpassword")).sendKeys(data.get(0).get(1));
-	
+		for (Map<String,String> data : credentials.asMaps()) {
+		driver.findElement(By.id("loginusername")).sendKeys(data.get("username"));
+		driver.findElement(By.id("loginpassword")).sendKeys(data.get("password"));
+		}
 	}
 
 	@Then("user clicks on Login button")
@@ -57,23 +59,30 @@ public class ContactStepDefinition {
 		Thread.sleep(3000);
 	}
 	
-	@Then("user enters new message details")
-	public void user_enters_new_message_details(DataTable message) {
-		List<List<String>> messageData = message.cells();
-		driver.findElement(By.id("recipient-email")).sendKeys(messageData.get(0).get(0));
-		driver.findElement(By.id("recipient-name")).sendKeys(messageData.get(0).get(1));
-		driver.findElement(By.id("message-text")).sendKeys(messageData.get(0).get(2));
-	}
-	
-	@Then("Send Message button is clicked by user")
-	public void Send_Message_button_is_clicked_by_user() throws Throwable {
+	@Then("user enters new message details and click on Send Message button")
+	public void user_enters_new_message_details_and_click_on_Send_Message_button(DataTable message) throws InterruptedException {
+		for (Map<String,String> messageData : message.asMaps()) {
+		driver.findElement(By.id("recipient-email")).sendKeys(messageData.get("email"));
+		driver.findElement(By.id("recipient-name")).sendKeys(messageData.get("name"));
+		driver.findElement(By.id("message-text")).sendKeys(messageData.get("message"));
+		
 		driver.findElement(By.xpath("//button[contains(text(),'Send message')]")).click();
 		Thread.sleep(3000);
+		
+		Alert al = driver.switchTo().alert();
+		al.accept();
+		Thread.sleep(3000);
+
+		
+		driver.findElement(By.xpath("//a[contains(text(),'Contact')]")).click();
+		Thread.sleep(3000);
+		}
 	}
+	
 	
 	@Then("user quit")
 	public void user_quit() throws Throwable {	
 		driver.quit();
 	} 
+
 }
-*/

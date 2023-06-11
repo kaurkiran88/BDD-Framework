@@ -7,7 +7,7 @@ import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-		features = "/Users/kataria99/Desktop/QA/CucumberWorkspace/DemoBlazeProject/src/main/java/features/contactusingtables.feature",
+		features = "/Users/kataria99/Desktop/QA/CucumberWorkspace/DemoBlazeProject/src/main/java/features/contactmap.feature",
 		glue= "stepDefinition",
 	    stepNotifications = true,
 		plugin= {"pretty","html:target/reports.html"},
